@@ -1,3 +1,5 @@
+# REM Waste Code Challenge
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -5,32 +7,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 First, run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🧠 Approach
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To build this project, I prioritized a **component-based architecture** to ensure scalability and maintainability. This allows for easier future updates, as changes can be made in isolated components and reflected across the application consistently.
 
-## Learn More
+Here's a brief overview of the structure and logic:
 
-To learn more about Next.js, take a look at the following resources:
+- **`page.tsx`**: This is the main entry point of the app. It handles the API call, retrieves the data, and passes it down to child components.
+- **`SkipCard.tsx`**: Responsible for rendering each card dynamically using the data fetched from the API. A `.map()` function is used to iterate over the response and generate each card.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **State Management**: When a user selects a card, the relevant data is lifted up and passed to the footer component. The footer then displays a **"Back"** button (to deselect) and a **"Continue"** button based on the selection state.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This modular structure ensures clarity in responsibilities between components and helps keep the codebase clean and efficient.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Eduardo Fanti Dutra | 07-Apr-2025
