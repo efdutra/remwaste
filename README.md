@@ -1,21 +1,23 @@
 # REM Waste Code Challenge
 
-Sandbox URL:
+## 🔗 Sandbox URLs
 
 - [https://remwaste.vercel.app/](https://remwaste.vercel.app/)
 - [https://remwaste-eduardos-projects-de9a72aa.vercel.app/](https://remwaste-eduardos-projects-de9a72aa.vercel.app/)
 
-## Getting Started
+---
 
-To run locally the development server:
+## 🔧 Getting Started
 
-First, install de dependencies
+To run the development server locally:
+
+First, install the dependencies:
 
 ```bash
 npm install
 ```
 
-And then, run locally:
+Then, start the server:
 
 ```bash
 npm run dev
@@ -23,19 +25,48 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+---
+
 ## 🧠 Approach
 
 To build this project, I prioritized a **component-based architecture** to ensure scalability and maintainability. This allows for easier future updates, as changes can be made in isolated components and reflected across the application consistently.
 
-Here's a brief overview of the structure and logic:
+### 🔍 Logic Overview
 
-- **`page.tsx`**: This is the main entry point of the app. It handles the API call, retrieves the data, and passes it down to child components.
-- **`SkipCard.tsx`**: Responsible for rendering each card dynamically using the data fetched from the API. A `.map()` function is used to iterate over the response and generate each card.
+- **`page.tsx`**: The main entry point of the app. It handles the API call, retrieves the data, and passes it down to child components.
+- **`SkipCard.tsx`**: Responsible for rendering each card dynamically using the fetched data via `.map()`.
 
-- **State Management**: When a user selects a card, the relevant data is lifted up and passed to the footer component. The footer then displays a **"Back"** button (to deselect) and a **"Continue"** button based on the selection state.
+### 🗂️ State Management
 
-This modular structure ensures clarity in responsibilities between components and helps keep the codebase clean and efficient.
+When a user selects a card, the state is lifted and shared with the footer component. The footer then displays a **"Back"** button (to deselect) and a **"Continue"** button, based on whether a card is selected.
 
-## Eduardo Fanti Dutra | 07-Apr-2025
+This modular structure ensures clarity between components and keeps the codebase clean and efficient.
+
+---
+
+## 📁 File Structure
+
+```
+src/
+├── app/
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── components/
+│   ├── Breadcrumb.tsx
+│   └── SkipCard.tsx
+├── services/
+│   └── api.ts
+└── types/
+    └── skip.ts
+```
+
+---
+
+## 👨‍💻 About
+
+**Eduardo Fanti Dutra**  
+🗓️ 07-Apr-2025
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
