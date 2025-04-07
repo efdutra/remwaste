@@ -1,103 +1,140 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect } from "react";
+import { SkipCard } from "@/components/SkipCard";
+import { fetchSkipsByLocation } from "@/services/api";
+import { Skip } from "@/types/skip";
+import { Breadcrumb } from "@/components/Breadcrumb";
+
+const App: React.FC = () => {
+  const [skips, setSkips] = useState<Skip[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedSkip, setSelectedSkip] = useState<Skip | null>(null);
+
+  useEffect(() => {
+    const loadSkips = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchSkipsByLocation("NR32", "Lowestoft");
+        setSkips(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadSkips();
+  }, []);
+
+  const handleSelectSkip = (skip: Skip) => {
+    setSelectedSkip(skip);
+  };
+
+  const handleContinue = () => {
+    if (selectedSkip) {
+      console.log("Proceeding with:", selectedSkip);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="grid grid-rows-[1fr_auto] items-center justify-items-center min-h-screen p-4 pb-12 gap-8 sm:p-10 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-[32px] row-start-1 items-center justify-center">
+        <Breadcrumb
+          steps={[
+            "Postcode",
+            "Waste Type",
+            "Select Skip",
+            "Permit Check",
+            "Choose Date",
+            "Payment",
+          ]}
+          currentStep={2}
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        <div className="flex flex-col items-center justify-center text-center mb-8">
+          <h1 className="text-3xl font-bold text-white">
+            Choose Your Skip Size
+          </h1>
+          <h2 className="text-lg text-gray-400">
+            Select the skip size that best suits your needs
+          </h2>
         </div>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+            <p>Loading Skips...</p>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+            <h2 className="text-xl font-bold text-red-600 mb-2">
+              Error loading skips
+            </h2>
+            <p className="mb-4">{error}</p>
+            <button
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {skips.map((skip) => (
+              <SkipCard
+                key={skip.id}
+                option={{
+                  id: skip.id,
+                  size: skip.size.toString(),
+                  hirePeriod: `${skip.hire_period_days}`,
+                  price: `£ ${skip.price_before_vat}`,
+                }}
+                isSelected={selectedSkip?.id === skip.id}
+                onSelect={() => handleSelectSkip(skip)}
+              />
+            ))}
+          </div>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      {selectedSkip && (
+        <footer className="fixed bottom-0 left-0 w-full bg-black text-white p-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-lg font-bold">
+              {selectedSkip?.size || "Select a skip"}
+            </span>
+            {selectedSkip && (
+              <>
+                <span className="text-gray-400">
+                  {selectedSkip.hire_period_days} day hire
+                </span>
+                <span className="text-blue-500 font-bold">
+                  £ {selectedSkip.price_before_vat}
+                </span>
+              </>
+            )}
+          </div>
+          <div className="flex gap-4">
+            <button
+              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+              onClick={() => setSelectedSkip(null)}
+            >
+              Back
+            </button>
+            <button
+              className={`px-4 py-2 ${
+                selectedSkip
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-gray-600 cursor-not-allowed"
+              } text-white rounded`}
+              onClick={handleContinue}
+              disabled={!selectedSkip}
+            >
+              Continue →
+            </button>
+          </div>
+        </footer>
+      )}
     </div>
   );
-}
+};
+
+export default App;
