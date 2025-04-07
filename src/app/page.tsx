@@ -38,8 +38,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="grid grid-rows-[1fr_auto] items-center justify-items-center min-h-screen p-4 pb-12 gap-8 sm:p-10 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-1 items-center justify-center">
+    <div className="grid grid-rows-[1fr_auto] items-center justify-items-center min-h-screen p-4 pb-12 gap-4 sm:gap-8 sm:p-10 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-6 sm:gap-[32px] row-start-1 items-center justify-center px-4">
         <Breadcrumb
           steps={[
             "Postcode",
@@ -52,33 +52,33 @@ const App: React.FC = () => {
           currentStep={2}
         />
         <div className="flex flex-col items-center justify-center text-center mb-8">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">
             Choose Your Skip Size
           </h1>
-          <h2 className="text-lg text-gray-400">
+          <h2 className="text-base sm:text-lg text-gray-400">
             Select the skip size that best suits your needs
           </h2>
         </div>
         {loading ? (
-          <div className="flex flex-col items-center justify-center min-h-screen">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
-            <p>Loading Skips...</p>
+          <div className="flex flex-col items-center justify-center min-h-screen px-4">
+            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-t-2 border-b-2 border-blue-500 mb-4"></div>
+            <p className="text-sm sm:text-base">Loading Skips...</p>
           </div>
         ) : error ? (
-          <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
-            <h2 className="text-xl font-bold text-red-600 mb-2">
+          <div className="flex flex-col items-center justify-center min-h-screen px-4 text-center">
+            <h2 className="text-lg sm:text-xl font-bold text-red-600 mb-2">
               Error loading skips
             </h2>
-            <p className="mb-4">{error}</p>
+            <p className="text-sm sm:text-base mb-4">{error}</p>
             <button
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               onClick={() => window.location.reload()}
             >
               Try Again
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8 mb-20">
             {skips.map((skip) => (
               <SkipCard
                 key={skip.id}
@@ -96,14 +96,14 @@ const App: React.FC = () => {
         )}
       </main>
       {selectedSkip && (
-        <footer className="fixed bottom-0 left-0 w-full bg-black text-white p-4 flex items-center justify-between">
+        <footer className="fixed bottom-0 left-0 w-full bg-black text-white p-3 sm:p-4 flex flex-col sm:flex-row items-center sm:justify-between gap-2 sm:gap-4 z-30">
           <div className="flex items-center gap-4">
-            <span className="text-lg font-bold">
+            <span className="text-base sm:text-lg font-bold">
               {selectedSkip?.size || "Select a skip"}
             </span>
             {selectedSkip && (
               <>
-                <span className="text-gray-400">
+                <span className="text-sm sm:text-gray-400">
                   {selectedSkip.hire_period_days} day hire
                 </span>
                 <span className="text-blue-500 font-bold">
@@ -112,15 +112,15 @@ const App: React.FC = () => {
               </>
             )}
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-2 sm:gap-4">
             <button
-              className="px-4 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+              className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
               onClick={() => setSelectedSkip(null)}
             >
               Back
             </button>
             <button
-              className={`px-4 py-2 ${
+              className={`px-3 py-2 sm:px-4 sm:py-2 ${
                 selectedSkip
                   ? "bg-blue-600 hover:bg-blue-700"
                   : "bg-gray-600 cursor-not-allowed"
