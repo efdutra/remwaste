@@ -19,7 +19,7 @@ export const SkipCard: React.FC<SkipCardProps> = ({
 }) => {
   return (
     <div
-      className={`border rounded-lg cursor-pointer transition-all flex flex-col items-center justify-between w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[350px] md:h-[350px] lg:w-[400px] lg:h-[400px] p-4 ${
+      className={`border rounded-lg cursor-pointer transition-all flex flex-col items-center justify-between w-full max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] p-4 ${
         isSelected
           ? "border-blue-500 bg-gray-800 border-2"
           : "border-gray-700 hover:border-blue-300 bg-gray-900"
@@ -32,7 +32,7 @@ export const SkipCard: React.FC<SkipCardProps> = ({
             {option.size} Yards
           </span>
           <Image
-            className="rounded-lg mb-4 w-auto"
+            className="rounded-lg mb-4 w-full"
             src="https://images.unsplash.com/photo-1590496793929-36417d3117de?q=80&w=800"
             alt="Skip"
             width={300}
